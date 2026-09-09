@@ -31,7 +31,8 @@ const getAllProducts = async (req, res) => {
     try {
         const getAll = await productModel.find()
         return res.status(200).json({
-            message: "All products fetched successfully"
+            message: "All products fetched successfully",
+            data: getAll
         })
     }catch(error){
         return res.status(500).json({
