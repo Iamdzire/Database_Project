@@ -42,7 +42,7 @@ const getAllUsers = async (req, res) => {
 const getSingleUser = async (req, res) => {
         try {
             const {id} = req.params
-            const getSingle = await userModel.findById(id)
+            const getSingle = await userModel.findById(id).populate("products")
             if(!getSingle){
                 return res.status(404).json({
                     message: "user not found"

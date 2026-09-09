@@ -1,4 +1,6 @@
 require('dotenv').config()
+// For module javascript: Import 'dotenv/config'
+
 const express = require('express')
 const mongoose = require('mongoose');
 const userRoute = require('./route/userRoutes.js')
