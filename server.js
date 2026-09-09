@@ -1,12 +1,12 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose');
 const userRoute = require('./route/userRoutes.js')
 const productRoute = require('./route/productRoute.js')
 
 const compass_string = "mongodb://localhost:27017/cohort8_db"
-const atlas_string = "mongodb+srv://uchendu:Chigozie03.@cluster0.vkuzzsu.mongodb.net/cohort8_db?appName=Cluster0"
 
-mongoose.connect(compass_string)
+mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log("MongoDB Connected"))
     .catch(err => console.error("Connection Error: ", err));
 
