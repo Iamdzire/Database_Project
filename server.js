@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const userRoute = require('./route/userRoutes.js')
 const productRoute = require('./route/productRoute.js')
 
-const compass_string = "mongodb://localhost:27017/cohort8_db"
+const compass_string = process.env.COMPASS_STRING
 
 mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log("MongoDB Connected"))
@@ -19,8 +19,8 @@ const port = 3000
 app.use(express.json())
 
 
-app.get('/data',  (req, res) => {
-    res.send("Server is active")
+app.get('/',  (req, res) => {
+    res.send("Welcome")
 })
 
 app.use('/users', userRoute)
