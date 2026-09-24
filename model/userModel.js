@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // This is how you use default export using common js. 
-const userModel = mongoose.model('User', userSchema)
+const userModel = mongoose.model('users', userSchema, 'users')
 module.exports = userModel
 
 // This can also be written as

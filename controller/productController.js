@@ -3,6 +3,7 @@ const userModel = require('./../model/userModel.js')
 const cloudinary = require('../Config/cloudinary.js')
 
 
+
 /** To upload a product, we;
 
 * Find a user
@@ -29,13 +30,14 @@ const uploadProduct = async (req, res) => {
         const imageUrl = result.secure_url
 
         const product = await productModel.create({
-            name, description, price, category, stock, quantity, image: imageUrl
+            author: req.user._id, name, description, price, category, stock, quantity, image: imageUrl
         })
 
         await getUserID.products.push(product._id)
         await getUserID.save()
         return res.status(201).json({
-            message: 'Product uploaded successfully', product
+            message: 'Product uploaded successfully',
+            data: product
         })
     }catch(error) {
         return res.status(500).json({

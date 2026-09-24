@@ -1,5 +1,7 @@
 const userModel = require('./../model/userModel');
 const bcrypt = require('bcrypt')
+require('dotenv').config()
+const jwt = require('jsonwebtoken')
 
 /** CRUD
  * CREATE USER(POST)
@@ -14,7 +16,7 @@ const createUser = async (req, res) => {
         const genSalt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, genSalt)
         const user = await userModel.create({
-            name, email, password
+            name, email, password: hashedPassword
         })
         return res.status(201).json({
             message: "User created successfully",
@@ -30,7 +32,7 @@ const createUser = async (req, res) => {
 const loginUser = async(req, res) => {
     try {
         const {email, password} = req.body
-        const user = await userModel.findOne(email)
+        const user = await userModel.findOne({email})
         if(!user){
             return res.status(404).json({
                 message: "Are you sure you signed up?"
@@ -38,12 +40,23 @@ const loginUser = async(req, res) => {
         }
         const isMatch = await bcrypt.compare(password, user.password)
         if(!isMatch){
-            return res.status(404).json({
+            return res.status(400).json({
                 message: "Password is incorrect"
             })
         }
+        const token = jwt.sign(
+            {id: user._id},
+            process.env.JWT_SECRET,
+            {expiresIn: "7d"}
+        )
         return res.status(200).json({
-            message: "login successful"
+            message: "login successful",
+            token: token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
         })
     }catch(error){
         return res.status(500).json({
